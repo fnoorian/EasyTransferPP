@@ -10,7 +10,10 @@ by Mathieu Alorent and Bill Porter <www.billporter.info>.
 Usage
 =====
 
-You can define a struct two send complex data structures:
+Instantiation
+-------------
+
+You can define a struct to send complex data structures:
 ```cpp
 struct mystruct_t {
  int a;
@@ -18,7 +21,7 @@ struct mystruct_t {
 };
 ```
 
-Define a ETPP object, initialized with your stream object. For example,
+Define a ETPP object, initialized with your stream object. For example, to use TWI, use
 
 ```cpp
 EasyTransferPP<TwoWire> easyWire(Wire);
@@ -26,7 +29,7 @@ EasyTransferPP<TwoWire> easyWire(Wire);
 
 The first argument, `TwoWire`, is the type of TWI `Wire`.
 
-Another example is
+Another example is using the UART:
 ```cpp
 EasyTransferPP<Stream> easySerial(Serial);
 ```
@@ -36,6 +39,7 @@ For example, here the `easyWire` expects to receive a `mystruct_t`:
 ```cpp
 EasyTransferPP<TwoWire, mystruct_t> easyWire(Wire);
 ```
+This is further covered in section Receive buffers.
 
 Sending data
 ------------
@@ -46,14 +50,14 @@ void send(const T  &data_struct);
 void send(uint8_t const * const data_pointer, uint8_t size);
 
 void sendTo(uint8_t address, const T  &data_struct);
-void sendTo(uint8_t address, uint8_t const * const address, uint8_t size) ;
+void sendTo(uint8_t address, uint8_t const * const data_pointer, uint8_t size) ;
 ```
 
 Here:
 - `send` is used for `Serial`, while `sendTo` is used for `Wire`.
-- `address` is the receivers address in TWI.
+- `address` is the receiver's address in TWI.
 - `data_pointer` and `size` can be used to send any buffer.
-- `T` is automatically converted to your data type using templates.
+- `T` is automatically converted to your data type using C++ templates.
 
 For example, to send
 ```cpp
@@ -173,8 +177,10 @@ Protocol
 ========
 
 The EasyTransfer protocol is:
-   0x06, 0x85, size of payload (uint8_t), Payload, Checksum (in uint8_t)
- The checksum is computed by xoring "size of payload" with each byte of payload
+
+- 0x06, 0x85, size of payload (as uint8_t), Payload, Checksum (as uint8_t)
+
+The checksum is computed by xoring "size of payload" with each byte of the payload.
 
 Authors and Contact
 ===================
@@ -187,7 +193,7 @@ License
 
 This is a complete and clean rewrite of the EasyTransfer protocol
 using advanced C++ techniques to facilitate easy porting to different
-communication tools, and is distributed under
+communication peripherals, and is distributed under
 Apache License, Version 2.0 (the "License");
 
 you may not use this file except in compliance with the License.
