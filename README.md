@@ -21,7 +21,7 @@ struct mystruct_t {
 };
 ```
 
-Define a ETPP object, initialized with your stream object. For example, to use TWI, use
+Define a ETPP object, initialized with your stream object. For example, to use TWI, define
 
 ```cpp
 EasyTransferPP<TwoWire> easyWire(Wire);
@@ -34,7 +34,7 @@ Another example is using the UART:
 EasyTransferPP<Stream> easySerial(Serial);
 ```
 
-If you always expect to receive the same data, you can define it in your object.
+If you always expect to receive the same data type, you can define it as a part your object.
 For example, here the `easyWire` expects to receive a `mystruct_t`:
 ```cpp
 EasyTransferPP<TwoWire, mystruct_t> easyWire(Wire);
@@ -71,8 +71,8 @@ easySerial.send(sample_data);
 Receive buffers
 ---------------
 
-As observed above, the send function can use any data structure.
-But to receive data correctly, it's type has to be set.
+As explained above, the send function can use any data structure.
+But to receive data correctly, its type has to be set.
 
 EasyTransferPP allows setting an internal buffer, using the object Constructor (e.g., 
 `EasyTransferPP<TwoWire, mystruct_t> easyWire(Wire)`).
